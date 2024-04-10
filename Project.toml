@@ -15,15 +15,18 @@ SparseArrays = "2f01184e-e22b-5df5-ae63-d93ebab69eaf"
 
 [weakdeps]
 DifferentiationInterface = "a0c0ee7d-e4b9-4e03-894e-1c5f64a51d63"
+ModelingToolkit = "961ee093-0014-501f-94e3-6117800e7a78"
 
 [extensions]
 OptimizationDIExt = "DifferentiationInterface"
+OptimizationMTKExt = "ModelingToolkit"
 
 [compat]
 ADTypes = "0.2.5, 1"
 ArrayInterface = "7.6"
 DocStringExtensions = "0.9"
 LinearAlgebra = "1.9, 1.10"
+ModelingToolkit = "9"
 Reexport = "1.2"
 Requires = "1"
 SciMLBase = "2"
