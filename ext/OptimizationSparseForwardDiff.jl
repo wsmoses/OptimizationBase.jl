@@ -102,7 +102,11 @@ function OptimizationBase.instantiate_function(f::OptimizationFunction{true}, x,
         cons_jac_prototype = cons_jac_prototype,
         cons_hess_prototype = getfield.(cons_hess_caches, :sparsity),
         cons_hess_colorvec = getfield.(cons_hess_caches, :colors),
-        lag_h, f.lag_hess_prototype)
+        lag_h = lag_h,
+        lag_hess_prototype = f.lag_hess_prototype,
+        sys = f.sys,
+        expr = f.expr,
+        cons_expr = f.cons_expr)
 end
 
 function OptimizationBase.instantiate_function(f::OptimizationFunction{true},
@@ -210,7 +214,11 @@ function OptimizationBase.instantiate_function(f::OptimizationFunction{true},
         cons_jac_colorvec = cons_jac_colorvec,
         cons_hess_prototype = getfield.(cons_hess_caches, :sparsity),
         cons_hess_colorvec = getfield.(cons_hess_caches, :colors),
-        lag_h, f.lag_hess_prototype)
+        lag_h = lag_h,
+        lag_hess_prototype = f.lag_hess_prototype,
+        sys = f.sys,
+        expr = f.expr,
+        cons_expr = f.cons_expr)
 end
 
 function OptimizationBase.instantiate_function(f::OptimizationFunction{false}, x,
@@ -318,7 +326,11 @@ function OptimizationBase.instantiate_function(f::OptimizationFunction{false}, x
         cons_jac_prototype = cons_jac_prototype,
         cons_hess_prototype = getfield.(cons_hess_caches, :sparsity),
         cons_hess_colorvec = getfield.(cons_hess_caches, :colors),
-        lag_h, f.lag_hess_prototype)
+        lag_h = lag_h,
+        lag_hess_prototype = f.lag_hess_prototype,
+        sys = f.sys,
+        expr = f.expr,
+        cons_expr = f.cons_expr)
 end
 
 function OptimizationBase.instantiate_function(f::OptimizationFunction{false},
@@ -429,5 +441,9 @@ function OptimizationBase.instantiate_function(f::OptimizationFunction{false},
         cons_jac_prototype = cons_jac_prototype,
         cons_hess_prototype = getfield.(cons_hess_caches, :sparsity),
         cons_hess_colorvec = getfield.(cons_hess_caches, :colors),
-        lag_h, f.lag_hess_prototype)
+        lag_h = lag_h,
+        lag_hess_prototype = f.lag_hess_prototype,
+        sys = f.sys,
+        expr = f.expr,
+        cons_expr = f.cons_expr)
 end
