@@ -1,13 +1,13 @@
-module OptimizationDIExt
+module OptimizationZygoteExt
 
 import OptimizationBase, OptimizationBase.ArrayInterface
 import OptimizationBase.SciMLBase: OptimizationFunction
 import OptimizationBase.LinearAlgebra: I
 import DifferentiationInterface
 import DifferentiationInterface: prepare_gradient, prepare_hessian, prepare_jacobian, gradient!, hessian!, jacobian!
-using ADTypes
+using ADTypes, Zygote, Zygote.ChainRulesCore
 
-function OptimizationBase.instantiate_function(f, x, adtype::ADTypes.AbstractADType, p = SciMLBase.NullParameters(), num_cons = 0)
+function OptimizationBase.instantiate_function(f, x, adtype::ADTypes.AutoZygote, p = SciMLBase.NullParameters(), num_cons = 0)
     _f = (θ, args...) -> first(f.f(θ, p, args...))
 
     if f.grad === nothing
@@ -44,7 +44,7 @@ function OptimizationBase.instantiate_function(f, x, adtype::ADTypes.AbstractADT
         cons = nothing
     else
         cons = (res, θ) -> f.cons(res, θ, p)
-        cons_oop = (x) -> (_res = zeros(eltype(x), num_cons); cons(_res, x); _res)
+        cons_oop = (x) -> (_res = Zygote.Buffer(x, num_cons); ChainRulesCore.@ignore_derivatives cons(_res, x); copy(_res))
     end
 
     cons_jac_prototype = f.cons_jac_prototype
@@ -89,7 +89,7 @@ function OptimizationBase.instantiate_function(f, x, adtype::ADTypes.AbstractADT
         lag_h, f.lag_hess_prototype)
 end
 
-function OptimizationBase.instantiate_function(f, cache::OptimizationBase.ReInitCache, adtype::ADTypes.AbstractADType, num_cons = 0)
+function OptimizationBase.instantiate_function(f, cache::OptimizationBase.ReInitCache, adtype::ADTypes.AutoZygote, num_cons = 0)
     x = cache.u0
     p = cache.p
     _f = (θ, args...) -> first(f.f(θ, p, args...))
@@ -132,7 +132,7 @@ function OptimizationBase.instantiate_function(f, cache::OptimizationBase.ReInit
         cons = nothing
     else
         cons = (res, θ) -> f.cons(res, θ, p)
-        cons_oop = (x) -> (_res = zeros(eltype(x), num_cons); cons(_res, x); _res)
+        cons_oop = (x) -> (_res = Zygote.Buffer(x, num_cons); cons(_res, x); copy(_res))
     end
 
     cons_jac_prototype = f.cons_jac_prototype
