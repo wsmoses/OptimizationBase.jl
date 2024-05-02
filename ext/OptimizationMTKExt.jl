@@ -3,10 +3,10 @@ module OptimizationMTKExt
 import OptimizationBase, OptimizationBase.ArrayInterface
 import OptimizationBase.SciMLBase
 import OptimizationBase.SciMLBase: OptimizationFunction
-import OptimizationBase.ADTypes: AutoModelingToolkit
+import OptimizationBase.ADTypes
 isdefined(Base, :get_extension) ? (using ModelingToolkit) : (using ..ModelingToolkit)
 
-function OptimizationBase.instantiate_function(f, x, adtype::AutoModelingToolkit, p,
+function OptimizationBase.instantiate_function(f, x, adtype::ADTypes.AutoModelingToolkit, p,
         num_cons = 0)
     p = isnothing(p) ? SciMLBase.NullParameters() : p
 
